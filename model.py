@@ -19,6 +19,7 @@ y_data = idx2numpy.convert_from_file(f"{data_path}/emnist-byclass-train-labels-i
 learning_rate = 0.0005
 train_epochs = 50
 train_workers = 20
+# Validation split value is the amount for validation data and not the train data
 val_split = 0.1
 batch_size = 100
 

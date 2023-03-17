@@ -6,7 +6,6 @@ Sorts the letters from left to right and then displays them.
 
 import numpy as np
 import cv2
-import matplotlib.pyplot as plt
 
 def detect(img) :
     

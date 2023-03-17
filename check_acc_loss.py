@@ -12,7 +12,7 @@ import tensorflow as tf
 x_test = tf.keras.utils.normalize(x_test, axis = 1)
 
 # Load model
-unixTime = 1679036461
+unixTime = 1679033527
 model = tf.keras.models.load_model(f"Models/{unixTime}/model.meow")
 
 # Evaluate with test set
