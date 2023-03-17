@@ -81,6 +81,10 @@ The logs are located at the following folder : `Models/{timestamp}/logs`
 IN BOTH CASES MAKE SURE TO EDIT THE `unixTime` VARIABLE TO YOUR MODEL'S FOLDER.
 
 ### 📸 Screenshots
+![image](https://user-images.githubusercontent.com/38806897/225983444-f7001431-c7a4-4cd4-a7d2-6bf0b1e08d45.png)
+![image](https://user-images.githubusercontent.com/38806897/225983496-fe8df897-bc10-4a55-b6d9-550b12c7d32e.png)
+
+<i>As you can see, the model cannot differentiate between capital and small 'O'.</i>
 
 ### 📝 To do list :
 - [ ] Make improved models to raise the accuracy
