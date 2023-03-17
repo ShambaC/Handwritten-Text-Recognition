@@ -11,15 +11,25 @@ a-z
 '''
 
 # Load training data
-x_train = idx2numpy.convert_from_file(f"{data_path}/emnist-byclass-train-images-idx3-ubyte")
-y_train = idx2numpy.convert_from_file(f"{data_path}/emnist-byclass-train-labels-idx1-ubyte")
+x_data = idx2numpy.convert_from_file(f"{data_path}/emnist-byclass-train-images-idx3-ubyte")
+y_data = idx2numpy.convert_from_file(f"{data_path}/emnist-byclass-train-labels-idx1-ubyte")
 
 # Configs
 learning_rate = 0.0005
-train_epochs = 100
+train_epochs = 50
 train_workers = 20
-val_split = 0.9
-batch_size = 16
+val_split = 0.1
+batch_size = 100
+
+# Validation split and shuffle
+from sklearn.model_selection import train_test_split
+
+x_train, x_val, y_train, y_val = train_test_split(x_data, y_data, test_size= val_split)
+
+x_train = np.array(x_train)
+y_train = np.array(y_train)
+x_val = np.array(x_val)
+y_val = np.array(y_val)
 
 # Model
 import tensorflow as tf
@@ -32,6 +42,7 @@ model_path = f"Models/{t}"
 
 ## Normalize the dataset
 x_train = tf.keras.utils.normalize(x_train, axis= 1)
+x_val = tf.keras.utils.normalize(x_val, axis= 1)
 
 ## Define the model
 model = tf.keras.models.Sequential()
@@ -59,10 +70,12 @@ This is done as GPU runs out of memory. Tensorflow doesn't handle batches well a
 '''
 with tf.device('CPU') :
     train_data = tf.data.Dataset.from_tensor_slices((x_train, y_train)).batch(batch_size)
+    val_data = tf.data.Dataset.from_tensor_slices((x_val, y_val)).batch(batch_size)
 
 ## Train the model
 model.fit(
     train_data,
+    validation_data = val_data,
     epochs = train_epochs,
     callbacks = [earlystopper, tb_callback, reduceLROnPlat],
     workers = train_workers
