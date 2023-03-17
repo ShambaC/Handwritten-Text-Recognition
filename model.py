@@ -4,6 +4,7 @@ import numpy as np
 data_path = "Dataset/EMNIST"
 
 '''
+Using the Extended MNIST dataset.
 Dataset contains the following data :
 0-9
 A-Z

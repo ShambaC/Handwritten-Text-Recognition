@@ -1,25 +1,33 @@
+'''
+This script is used to check individual letter detection in an image with multiple letters.
+It detects letters, creates bounding boxes around them.
+Sorts the letters from left to right and then displays them.
+'''
+
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 
-
-
-def recog(img) :
+def detect(img) :
     
+    # Create an empty list to store the cropped images of the letters
     letters = []
-    img = np.array(img)
 
+    img = np.array(img)
     (h, w) = img.shape[: 2]
     image_size = h * w
     mser = cv2.MSER_create()
     mser.setMaxArea(int(image_size / 2))
     mser.setMinArea(10)
 
+    # Convert to grayscale and binarize with otsu method
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     _, bw = cv2.threshold(gray, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
 
+    # Detect letters
     regions, rects = mser.detectRegions(bw)
 
+    # Empty list to store the coordinates of each rectangle
     rects2 = []
     for (x, y, w, h) in rects :
         points = []
@@ -30,6 +38,8 @@ def recog(img) :
         
         rects2.append(points)
 
+    # Stores the coords but removes coords that are present within another bounding box.
+    # This prevents loops in letters being detected separately
     rects3 = []
     for line in rects2 :
             flag = False
@@ -39,28 +49,22 @@ def recog(img) :
             if not flag :
                 rects3.append(line)
 
+    # Sort the coords from left to right
     rects3.sort(key= lambda x : x[0])
 
+    # Crop each letter and store them
     for (x1, y1, x2, y2) in rects3 :
         cropped = img[y1:y2, x1:x2]
         letters.append(cropped)
 
-                
+    # Display each letter
     for images in letters :
         cv2.imshow('window', images)
         cv2.waitKey(1000)
         cv2.destroyAllWindows()
-
-    # img = cv2.resize(img, (20, 20), interpolation= cv2.INTER_AREA)
-    # img = cv2.rotate(img, cv2.ROTATE_90_COUNTERCLOCKWISE)
-    # img = cv2.flip(img, 0)
-    # # img = img[:, :, 0]
-    # img = np.pad(img, ((4, 4), (4, 4)), "constant", constant_values= 0)
-    # plt.imshow(img, cmap= plt.cm.binary)
-    # plt.title("Processed Image")
-    # plt.show()
     
 
+# PAINT Logic
 from tkinter import *
 import PIL.ImageGrab as ImageGrab
 
@@ -88,8 +92,8 @@ class Draw() :
         self.clear_screen.place(x = 0, y = 227)
  
         # Button to recognise the drawn number
-        self.rec_btn = Button(self.root, text = "Recognise", bd = 4, bg = 'white', command = self.rec_drawing, width = 9, relief = RIDGE)
-        self.rec_btn.place(x = 0, y = 257)
+        self.det_btn = Button(self.root, text = "Detect", bd = 4, bg = 'white', command = self.det_drawing, width = 9, relief = RIDGE)
+        self.det_btn.place(x = 0, y = 257)
 
         # Defining a background color for the Canvas
         self.background = Canvas(self.root, bg = 'white', bd = 5, relief = FLAT, height = 510, width = 850)
@@ -112,7 +116,7 @@ class Draw() :
         self.background.create_oval(x1, y1, x2, y2, fill = self.pointer, outline = self.pointer, width = 17.5)
     
     
-    def rec_drawing(self):
+    def det_drawing(self):
         
         # self.background update()
         x = self.root.winfo_rootx() + self.background.winfo_x()
@@ -122,7 +126,7 @@ class Draw() :
         y1 = y + self.background.winfo_height()
         img = ImageGrab.grab().crop((x + 7 , y + 7, x1 - 7, y1 - 7))
 
-        recog(img)
+        detect(img)
         
 
 root = Tk()

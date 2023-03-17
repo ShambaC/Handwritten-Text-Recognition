@@ -1,3 +1,8 @@
+'''
+This script is used to recognize individual elements.
+Letters and digits.
+'''
+
 import tensorflow as tf
 import numpy as np
 import cv2
