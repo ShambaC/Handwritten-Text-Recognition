@@ -55,12 +55,17 @@ def detect(img) :
     for (x1, y1, x2, y2) in rects3 :
         cropped = img[y1:y2, x1:x2]
         letters.append(cropped)
+        cv2.rectangle(img, (x1, y1), (x2, y2), color= (255, 0, 255), thickness= 1)
 
     # Display each letter
     for images in letters :
         cv2.imshow('window', images)
         cv2.waitKey(1000)
         cv2.destroyAllWindows()
+    
+    cv2.imshow('window', img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
     
 
 # PAINT Logic
