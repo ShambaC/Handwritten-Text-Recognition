@@ -2,6 +2,8 @@
 Second Model
 Works best with small number of epochs. Model tends to overfit after 7 epochs on average.
 Accuracy improved by 1. Went from 84% to 85%.
+
+THIS MODEL IS ASS, 85% accuracy my ASS.
 '''
 
 import idx2numpy
