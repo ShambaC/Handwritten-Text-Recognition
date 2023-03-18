@@ -1,5 +1,7 @@
 '''
 Second Model
+Works best with small number of epochs. Model tends to overfit after 7 epochs on average.
+Accuracy improved by 1. Went from 84% to 85%.
 '''
 
 import idx2numpy
@@ -24,11 +26,11 @@ x_data = x_data.reshape(x_data.shape[0], x_data.shape[1], x_data.shape[2], 1)
 
 # Configs
 learning_rate = 0.0005
-train_epochs = 50
+train_epochs = 20
 train_workers = 20
 # Validation split value is the amount for validation data and not the train data
 val_split = 0.1
-batch_size = 100
+batch_size = 128
 
 # Validation split and shuffle
 from sklearn.model_selection import train_test_split
@@ -58,6 +60,7 @@ model = tf.keras.models.Sequential()
 model.add(tf.keras.layers.Conv2D(32, kernel_size= 3, activation= 'relu', input_shape= (28, 28, 1)))
 model.add(tf.keras.layers.Conv2D(64, kernel_size= 3, activation= 'relu'))
 model.add(tf.keras.layers.Flatten())
+model.add(tf.keras.layers.Dense(128, activation= 'relu'))
 model.add(tf.keras.layers.Dense(62, activation= 'softmax'))
 
 ## Compile the model
@@ -68,9 +71,10 @@ model.compile(
 )
 
 ## Callbacks
-earlystopper = tf.keras.callbacks.EarlyStopping(monitor = 'val_loss', patience = 20, verbose = 1)
+earlystopper = tf.keras.callbacks.EarlyStopping(monitor = 'val_loss', patience = 10, verbose = 1)
 tb_callback = tf.keras.callbacks.TensorBoard(f"{model_path}/logs", update_freq = 1)
-reduceLROnPlat = tf.keras.callbacks.ReduceLROnPlateau(monitor = "val_loss", factor = 0.9, min_delta = 1e-10, patience = 10, verbose = 1, mode = "auto")
+reduceLROnPlat = tf.keras.callbacks.ReduceLROnPlateau(monitor = "val_loss", factor = 0.9, min_delta = 1e-10, patience = 5, verbose = 1, mode = "auto")
+checkpoint = tf.keras.callbacks.ModelCheckpoint(f"{model_path}/cp.meow", monitor= 'val_loss', verbose= 1, save_best_only= True, mode= 'min')
 
 ## Convert dataset into tensor and handle batches with CPU
 '''
@@ -85,7 +89,7 @@ model.fit(
     train_data,
     validation_data = val_data,
     epochs = train_epochs,
-    callbacks = [earlystopper, tb_callback, reduceLROnPlat],
+    callbacks = [earlystopper, tb_callback, reduceLROnPlat, checkpoint],
     workers = train_workers
 )
 

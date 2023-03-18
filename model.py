@@ -65,6 +65,7 @@ model.compile(
 earlystopper = tf.keras.callbacks.EarlyStopping(monitor = 'val_loss', patience = 20, verbose = 1)
 tb_callback = tf.keras.callbacks.TensorBoard(f"{model_path}/logs", update_freq = 1)
 reduceLROnPlat = tf.keras.callbacks.ReduceLROnPlateau(monitor = "val_loss", factor = 0.9, min_delta = 1e-10, patience = 10, verbose = 1, mode = "auto")
+checkpoint = tf.keras.callbacks.ModelCheckpoint(f"{model_path}/cp.meow", monitor= 'val_loss', verbose= 1, save_best_only= True, mode= 'min')
 
 ## Convert dataset into tensor and handle batches with CPU
 '''
@@ -79,7 +80,7 @@ model.fit(
     train_data,
     validation_data = val_data,
     epochs = train_epochs,
-    callbacks = [earlystopper, tb_callback, reduceLROnPlat],
+    callbacks = [earlystopper, tb_callback, reduceLROnPlat, checkpoint],
     workers = train_workers
 )
 
