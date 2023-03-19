@@ -21,7 +21,7 @@ LabelDict = {
 }
 
 # Define model path and load it
-unixTime = 1679036461
+unixTime = 1679220168
 ModelPath = f"Models/{unixTime}/model.meow"
 
 model = tf.keras.models.load_model(ModelPath)

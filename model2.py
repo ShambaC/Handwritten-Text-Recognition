@@ -3,7 +3,7 @@ Second Model
 Works best with small number of epochs. Model tends to overfit after 7 epochs on average.
 Accuracy improved by 1. Went from 84% to 85%.
 
-THIS MODEL IS ASS, 85% accuracy my ASS.
+I don't know about the results
 '''
 
 import idx2numpy
@@ -28,11 +28,11 @@ x_data = x_data.reshape(x_data.shape[0], x_data.shape[1], x_data.shape[2], 1)
 
 # Configs
 learning_rate = 0.0005
-train_epochs = 20
+train_epochs = 18
 train_workers = 20
 # Validation split value is the amount for validation data and not the train data
 val_split = 0.1
-batch_size = 128
+batch_size = 200
 
 # Validation split and shuffle
 from sklearn.model_selection import train_test_split
@@ -59,8 +59,9 @@ x_val = tf.keras.utils.normalize(x_val, axis= 1)
 
 ## Define the model
 model = tf.keras.models.Sequential()
-model.add(tf.keras.layers.Conv2D(32, kernel_size= 3, activation= 'relu', input_shape= (28, 28, 1)))
-model.add(tf.keras.layers.Conv2D(64, kernel_size= 3, activation= 'relu'))
+model.add(tf.keras.layers.Conv2D(32, kernel_size= 5, activation= 'relu', input_shape= (28, 28, 1)))
+model.add(tf.keras.layers.MaxPool2D(pool_size= (2, 2)))
+model.add(tf.keras.layers.Dropout(0.3))
 model.add(tf.keras.layers.Flatten())
 model.add(tf.keras.layers.Dense(128, activation= 'relu'))
 model.add(tf.keras.layers.Dense(62, activation= 'softmax'))

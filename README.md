@@ -8,6 +8,14 @@ A simple neural network with the following layers is used to recognise hadnwritt
 - Dense layer (128)(relu)
 - Dense layer (62)(Output)(softmax)
 
+### Model 2
+- Conv2D layer (32)(kernel = 5)(relu)
+- MaxPool2D layer
+- Dropout (0.3)
+- Flatten
+- Dense Layer(128)(relu)
+- Dense Layer (62)(output)(softmax)
+
 The Extended MNIST or [EMNIST dataset](https://www.nist.gov/itl/products-and-services/emnist-dataset) is used to train the model.
 Specifically the byclass set is used as it had data for all the digits and both capital and small letters
 
@@ -66,15 +74,15 @@ You can visualise the training using tensorboard. Run `tensorboard --logdir = pa
 
 The logs are located at the following folder : `Models/{timestamp}/logs`
 
-<i>With this model I have been unable to increase the accuracy beyond 84%.</i>
+~~<i>With this model I have been unable to increase the accuracy beyond 84%.</i>~~
+<i>Model 2 increases accuracy to 86%</i>
 
 ### ⬇️ Download pre-trained models :
-| Model      | Test Loss | Test Accuracy | Download |
-|------------|-----------|---------------|----------|
-| 1679033527 | 0.4489    | 0.8467        |[Download](https://cdn.discordapp.com/attachments/559309816640831489/1086345880170418236/Models1.zip)|
-| 1679036461 | 0.4381    | 0.8480        |[Download](https://cdn.discordapp.com/attachments/559309816640831489/1086345880585638039/Models2.zip)|
-
-<i>Model 2 is pretty useless. It seems like its overfitting the data. Ignore model 2 for now</i>
+| Model      |    Type   | Test Loss | Test Accuracy | Download |
+|------------|-----------|-----------|---------------|----------|
+| 1679033527 |     1     |  0.4489   | 0.8467        |[Download](https://cdn.discordapp.com/attachments/559309816640831489/1086345880170418236/Models1.zip)|
+| 1679036461 |     1     |  0.4381   | 0.8480        |[Download](https://cdn.discordapp.com/attachments/559309816640831489/1086345880585638039/Models2.zip)|
+| 1679220168 |     2     |  0.3837   | 0.8616        |[Download](https://cdn.discordapp.com/attachments/559309816640831489/1086956826173640724/Models3.zip)|
 
 ### 🏃‍♂️ Run the model :
 - Run the `tkRecogIndv.py` script to check for individual characters only.
