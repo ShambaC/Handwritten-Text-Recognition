@@ -19,7 +19,7 @@ A simple neural network with the following layers is used to recognise hadnwritt
 The Extended MNIST or [EMNIST dataset](https://www.nist.gov/itl/products-and-services/emnist-dataset) is used to train the model.
 Specifically the byclass set is used as it had data for all the digits and both capital and small letters
 
-All the scripts have comments to help people understand what the F is going on.
+All the scripts have comments to help people understand what the hell is going on.
 
 ## 🔎 How to use ?
 Clone the repo and then do the following
