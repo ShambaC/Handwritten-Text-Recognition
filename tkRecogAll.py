@@ -28,90 +28,86 @@ model = tf.keras.models.load_model(ModelPath)
 
 # Method to perform the recognition
 def recog(img) :
-    try :
-        # Create an empty list to store the cropped images of the letters
-        letters = []
+    # Create an empty list to store the cropped images of the letters
+    letters = []
 
-        # Convert image to cv2 format from Pillow
-        img = np.array(img)
-        (h, w) = img.shape[: 2]
-        image_size = h * w
+    # Convert image to cv2 format from Pillow
+    img = np.array(img)
+    (h, w) = img.shape[: 2]
+    image_size = h * w
 
-        # Create an Maximally Stable External Region Extractor
-        # More on https://docs.opencv.org/4.x/d3/d28/classcv_1_1MSER.html
-        mser = cv2.MSER_create()
-        mser.setMaxArea(int(image_size / 2))
-        mser.setMinArea(10)
+    # Create an Maximally Stable External Region Extractor
+    # More on https://docs.opencv.org/4.x/d3/d28/classcv_1_1MSER.html
+    mser = cv2.MSER_create()
+    mser.setMaxArea(int(image_size / 2))
+    mser.setMinArea(10)
 
-        # Convert to grayscale and binarize with otsu method
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        _, bw = cv2.threshold(gray, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+    # Convert to grayscale and binarize with otsu method
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    _, bw = cv2.threshold(gray, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
 
-        # Detect letters
-        regions, rects = mser.detectRegions(bw)
+    # Detect letters
+    regions, rects = mser.detectRegions(bw)
 
         # Empty list to store the coordinates of each rectangle
-        rects2 = []
-        for (x, y, w, h) in rects :
-            points = []
-            points.append(x)
-            points.append(y)
-            points.append(x + w)
-            points.append(y + h)
+    rects2 = []
+    for (x, y, w, h) in rects :
+        points = []
+        points.append(x)
+        points.append(y)
+        points.append(x + w)
+        points.append(y + h)
             
-            rects2.append(points)
+        rects2.append(points)
 
-        # Stores the coords but removes coords that are present within another bounding box.
-        # This prevents loops in letters being detected separately
-        rects3 = []
-        for line in rects2 :
-                flag = False
-                for line2 in rects2 :
-                    if line[0] > line2[0] and line[1] > line2[1] and line[2] < line2[2] and line[3] < line2[3] :
-                        flag = True
-                if not flag :
-                    rects3.append(line)
+    # Stores the coords but removes coords that are present within another bounding box.
+    # This prevents loops in letters being detected separately
+    rects3 = []
+    for line in rects2 :
+            flag = False
+            for line2 in rects2 :
+                if line[0] > line2[0] and line[1] > line2[1] and line[2] < line2[2] and line[3] < line2[3] :
+                    flag = True
+            if not flag :
+                rects3.append(line)
 
-        # Sort the coords from left to right
-        rects3.sort(key= lambda x : x[0])
+    # Sort the coords from left to right
+    rects3.sort(key= lambda x : x[0])
 
-        # Crop each letter and store them
-        for (x1, y1, x2, y2) in rects3 :
-            cropped = img[y1:y2, x1:x2]
-            letters.append(cropped)
+    # Crop each letter and store them
+    for (x1, y1, x2, y2) in rects3 :
+        cropped = img[y1:y2, x1:x2]
+        letters.append(cropped)
 
-        #Define a string to store the recognized letters
-        word_letters = ""
+    #Define a string to store the recognized letters
+    word_letters = ""
 
-        # Iterate through the cropped images
-        for images in letters :
+    # Iterate through the cropped images
+    for images in letters :
 
-            # Preprocessing
-            ## Reduce size to 20x20 as that's the dimension in which the letters are focused.
-            images = cv2.resize(images, (20, 20), interpolation= cv2.INTER_AREA)
-            # Rotate and flip image because for some weird reason the model is checking like that.
-            images = cv2.rotate(images, cv2.ROTATE_90_COUNTERCLOCKWISE)
-            images = cv2.flip(images, 0)
-            # Strip channel info
-            images = images[:, :, 0]
-            # Negate images to invert the colors.
-            # Make background black and text white, because that's how the dataset is.
-            images = cv2.bitwise_not(images)
-            # Extend the image's boundary by 4 pixels on all sides to make it similar to the dataset images.
-            images = np.pad(images, ((4, 4), (4, 4)), "constant", constant_values= 0)
+        # Preprocessing
+        ## Reduce size to 20x20 as that's the dimension in which the letters are focused.
+        images = cv2.resize(images, (20, 20), interpolation= cv2.INTER_AREA)
+        # Rotate and flip image because the images in the dataset are transposed.
+        images = cv2.rotate(images, cv2.ROTATE_90_COUNTERCLOCKWISE)
+        images = cv2.flip(images, 0)
+        # Strip channel info
+        images = images[:, :, 0]
+        # Negate images to invert the colors.
+        # Make background black and text white, because that's how the dataset is.
+        images = cv2.bitwise_not(images)
+        # Extend the image's boundary by 4 pixels on all sides to make the dimension 28x28.
+        images = np.pad(images, ((4, 4), (4, 4)), "constant", constant_values= 0)
 
-            # Predict the output values from the image and store the array in a variable
-            pred = model.predict(np.array([images]))
-            # Find the label with the highest value.
-            predIndex = np.argmax(pred)
-            # Add the label value to the final output string
-            word_letters += LabelDict[predIndex]
+        # Predict the output values from the image and store the array in a variable
+        pred = model.predict(np.array([images]))
+        # Find the label with the highest value.
+        predIndex = np.argmax(pred)
+        # Add the label value to the final output string
+        word_letters += LabelDict[predIndex]
 
-        # Display the results
-        messagebox.showinfo(title= "Result", message= f"The word is {word_letters}")
-    except :
-        print("ERROR")
-
+    # Display the results
+    messagebox.showinfo(title= "Result", message= f"The word is {word_letters}")
 
 # PAINT APP USING tkinter
 from tkinter import *
@@ -158,7 +154,7 @@ class Draw() :
         self.background.place(x = 80, y = 20)
  
  
-        #Bind the background Canvas with mouse click
+        # Bind the background Canvas with mouse click
         self.background.bind("<B1-Motion>",self.paint)
 
     def eraser(self) :
@@ -177,20 +173,17 @@ class Draw() :
     
     
     def rec_drawing(self):
-        try:
-            # Get the coordinate values of the canvas
-            x = self.root.winfo_rootx() + self.background.winfo_x()
-            y = self.root.winfo_rooty() + self.background.winfo_y()
+        # Get the coordinate values of the canvas
+        x = self.root.winfo_rootx() + self.background.winfo_x()
+        y = self.root.winfo_rooty() + self.background.winfo_y()
  
-            x1 = x + self.background.winfo_width()
-            y1 = y + self.background.winfo_height()
+        x1 = x + self.background.winfo_width()
+        y1 = y + self.background.winfo_height()
 
-            # Screenshot the whole display and then crop out the canvas
-            img = ImageGrab.grab().crop((x + 7 , y + 7, x1 - 7, y1 - 7))
+        # Screenshot the whole display and then crop out the canvas
+        img = ImageGrab.grab().crop((x + 7 , y + 7, x1 - 7, y1 - 7))
 
-            recog(img)
-        except:
-            print("Error in screenshot execution") 
+        recog(img)
 
 root = Tk()
 p = Draw(root)

@@ -62,9 +62,17 @@ model.compile(
 )
 
 ## Callbacks
+
+### Stop earlier if validation loss doesn't improve for 20 epochs.
 earlystopper = tf.keras.callbacks.EarlyStopping(monitor = 'val_loss', patience = 20, verbose = 1)
+
+### Create logs to see graphs in tensorboard. I don't see much use except for making me look cool.
 tb_callback = tf.keras.callbacks.TensorBoard(f"{model_path}/logs", update_freq = 1)
+
+### Reduce the learning rate if validation loss doesn't improve for 10 epochs
 reduceLROnPlat = tf.keras.callbacks.ReduceLROnPlateau(monitor = "val_loss", factor = 0.9, min_delta = 1e-10, patience = 10, verbose = 1, mode = "auto")
+
+### Save the model whenever validation loss hits a new low.
 checkpoint = tf.keras.callbacks.ModelCheckpoint(f"{model_path}/cp.meow", monitor= 'val_loss', verbose= 1, save_best_only= True, mode= 'min')
 
 ## Convert dataset into tensor and handle batches with CPU
