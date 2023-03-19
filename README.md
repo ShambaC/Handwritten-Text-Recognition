@@ -74,6 +74,8 @@ The logs are located at the following folder : `Models/{timestamp}/logs`
 | 1679033527 | 0.4489    | 0.8467        |[Download](https://cdn.discordapp.com/attachments/559309816640831489/1086345880170418236/Models1.zip)|
 | 1679036461 | 0.4381    | 0.8480        |[Download](https://cdn.discordapp.com/attachments/559309816640831489/1086345880585638039/Models2.zip)|
 
+<i>Model 2 is pretty useless. It seems like its overfitting the data. Ignore model 2 for now</i>
+
 ### 🏃‍♂️ Run the model :
 - Run the `tkRecogIndv.py` script to check for individual characters only.
 - Run the `tkRecogAll.py` script to recognize words along with numbers.
