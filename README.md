@@ -91,9 +91,14 @@ The logs are located at the following folder : `Models/{timestamp}/logs`
 IN BOTH CASES MAKE SURE TO EDIT THE `unixTime` VARIABLE TO YOUR MODEL'S FOLDER.
 
 ### 📸 Screenshots
-![image](https://user-images.githubusercontent.com/38806897/225983444-f7001431-c7a4-4cd4-a7d2-6bf0b1e08d45.png)
-![image](https://user-images.githubusercontent.com/38806897/226188252-80c297ec-045f-4927-922f-36b163679cf6.png)
+All screenshots are taken with best results. Totally not biased screenshotting.
 
+![image](https://user-images.githubusercontent.com/38806897/225983444-f7001431-c7a4-4cd4-a7d2-6bf0b1e08d45.png)
+![image](https://user-images.githubusercontent.com/38806897/226276782-a4c3e7aa-879a-4daa-8cd5-fbe0c993b9a4.png)
+
+<i>Space detection between words</i>
+
+![image](https://user-images.githubusercontent.com/38806897/226188252-80c297ec-045f-4927-922f-36b163679cf6.png)
 
 <i>As you can see, the model cannot differentiate between capital and small 'O'.</i>
 
