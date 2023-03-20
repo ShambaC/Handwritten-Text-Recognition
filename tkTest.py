@@ -59,6 +59,17 @@ def detect(img) :
 
     # Display each letter
     for images in letters :
+
+        images = images[:, :, 0]
+        h, w = images.shape
+
+        if h > w :
+            diff = int((h - w) / 2)
+            images = np.pad(images, ((0, 0), (diff, diff)), 'constant', constant_values= 255)
+        elif w > h :
+            diff = int((w - h) / 2)
+            images = np.pad(images, ((diff, diff), (0, 0)), 'constant', constant_values= 255)
+
         cv2.imshow('window', images)
         cv2.waitKey(1000)
         cv2.destroyAllWindows()

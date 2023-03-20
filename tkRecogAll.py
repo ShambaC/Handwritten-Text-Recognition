@@ -21,7 +21,7 @@ LabelDict = {
 }
 
 # Define model path and load it
-unixTime = 1679220168
+unixTime = 1679036461
 ModelPath = f"Models/{unixTime}/model.meow"
 
 model = tf.keras.models.load_model(ModelPath)
@@ -86,23 +86,39 @@ def recog(img) :
     for images in letters :
 
         # Preprocessing
+        ## Strip channel info
+        images = images[:, :, 0]
+
+        ## Padding the images to become square before resizing
+        h, w = images.shape
+
+        if h > w :
+            diff = int((h - w) / 2)
+            images = np.pad(images, ((0, 0), (diff, diff)), 'constant', constant_values= 255)
+        elif w > h :
+            diff = int((w - h) / 2)
+            images = np.pad(images, ((diff, diff), (0, 0)), 'constant', constant_values= 255)
+
         ## Reduce size to 20x20 as that's the dimension in which the letters are focused.
         images = cv2.resize(images, (20, 20), interpolation= cv2.INTER_AREA)
+
         # Rotate and flip image because the images in the dataset are transposed.
         images = cv2.rotate(images, cv2.ROTATE_90_COUNTERCLOCKWISE)
         images = cv2.flip(images, 0)
-        # Strip channel info
-        images = images[:, :, 0]
+
         # Negate images to invert the colors.
         # Make background black and text white, because that's how the dataset is.
         images = cv2.bitwise_not(images)
+
         # Extend the image's boundary by 4 pixels on all sides to make the dimension 28x28.
         images = np.pad(images, ((4, 4), (4, 4)), "constant", constant_values= 0)
 
         # Predict the output values from the image and store the array in a variable
         pred = model.predict(np.array([images]))
+
         # Find the label with the highest value.
         predIndex = np.argmax(pred)
+        
         # Add the label value to the final output string
         word_letters += LabelDict[predIndex]
 
