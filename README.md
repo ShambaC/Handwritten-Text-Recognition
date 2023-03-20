@@ -102,6 +102,32 @@ All screenshots are taken with best results. Totally not biased screenshotting.
 
 <i>As you can see, the model cannot differentiate between capital and small 'O'.</i>
 
+### 👨‍🏫 A little explanation on the pre-processing of images during inference :
+- First of all each characters in the image are separated into different images.
+    - This is done as the model recognizes individual letters and complete words
+    - This done using MSER. So, words where the letters are joined together won't work (like cursive writing)
+- Then a list is created with the 4 corners co-ordinates of each character.
+- Then a check is performed to detect detection rects within characters.
+    - This happens with characters having a loop. For example :
+        - e, the whole character is detected and the white space as well inside the loop.
+        - same goes for a, p or any character with loops.
+- Then we sort the detected character co-ordinates in the order in which they appear from left to right.
+- Then the original image is cropped to separate the characters and store them in a list.
+- Then we detect spaces. The logic is ;
+    - First calculate the space between each characters.
+    - Find the mean spacing.
+    - Any space greater than mean spacing is a space between two words.
+- Pad the character images with white pixels to make them as close to a square as possible.
+- Resize image to 20x20.
+- Transpose image.
+- Negate image.
+- Pad image on all sides with 4 pixels, resulting in a 28x28 image.
+
+### ❌ Flaws in pre-processing :
+- Small 'i' is not detected properly as the dot of the 'i' and the bar count as separate characters.
+- Space detection will result in wrong output if the input is a single word.
+    - It will add spaces even though they are not needed. Because of-course the space detection is a heuristic approach.
+
 ### 📝 To do list :
 - [ ] Make improved models to raise the accuracy
 - [ ] Improve the preprocessing of images
