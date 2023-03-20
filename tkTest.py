@@ -57,9 +57,32 @@ def detect(img) :
         letters.append(cropped)
         cv2.rectangle(img, (x1, y1), (x2, y2), color= (255, 0, 255), thickness= 1)
 
+    # Detect spaces between multiple words
+    ## Calculate and store spacing between each character in a list
+    spaces = []
+    for i in range(len(letters) - 1) :
+        space = rects3[i + 1][0] - rects3[i][0]
+        spaces.append(space)
+
+    ## Find out the mean space
+    avg_spacing = sum(spaces) / len(spaces)
+
+    ## If a space is greater than the mean space then it would mean a space between two words
+    spaceCount = 1
+    for i in range(len(spaces)) :
+        if spaces[i] > avg_spacing :
+            letters.insert(i + spaceCount, "SPACE")
+            spaceCount += 1
+
+    index = -1
     # Display each letter
     for images in letters :
+        index += 1
 
+        if isinstance(images, str) :
+            print("space ", index)
+            continue
+        
         images = images[:, :, 0]
         h, w = images.shape
 
@@ -87,7 +110,7 @@ class Draw() :
     def __init__(self, root) :
         self.root = root
         self.root.title("MyPaint")
-        self.root.geometry("1024x576")
+        self.root.geometry("1500x576")
         self.root.configure(background = "black")
         self.root.resizable(0, 0)
 
@@ -111,7 +134,7 @@ class Draw() :
         self.det_btn.place(x = 0, y = 257)
 
         # Defining a background color for the Canvas
-        self.background = Canvas(self.root, bg = 'white', bd = 5, relief = FLAT, height = 510, width = 850)
+        self.background = Canvas(self.root, bg = 'white', bd = 5, relief = FLAT, height = 510, width = 1370)
         self.background.place(x = 80, y = 20)
  
  

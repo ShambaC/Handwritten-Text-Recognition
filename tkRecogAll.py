@@ -79,11 +79,32 @@ def recog(img) :
         cropped = img[y1:y2, x1:x2]
         letters.append(cropped)
 
+    # Detect spaces between multiple words
+    ## Calculate and store spacing between each character in a list
+    spaces = []
+    for i in range(len(letters) - 1) :
+        space = rects3[i + 1][0] - rects3[i][0]
+        spaces.append(space)
+
+    ## Find out the mean space
+    avg_spacing = sum(spaces) / len(spaces)
+
+    ## If a space is greater than the mean space then it would mean a space between two words
+    spaceCount = 1
+    for i in range(len(spaces)) :
+        if spaces[i] > avg_spacing :
+            letters.insert(i + spaceCount, "SPACE")
+            spaceCount += 1
+
     #Define a string to store the recognized letters
     word_letters = ""
 
     # Iterate through the cropped images
     for images in letters :
+
+        if isinstance(images, str) :
+            word_letters += " "
+            continue
 
         # Preprocessing
         ## Strip channel info
@@ -136,7 +157,7 @@ class Draw() :
         # Window title
         self.root.title("MyPaint")
         # Window resolution
-        self.root.geometry("1024x576")
+        self.root.geometry("1500x576")
         # Window background color
         self.root.configure(background = "black")
         # Do not let the window to be resizable on both axes
@@ -166,7 +187,7 @@ class Draw() :
         self.rec_btn.place(x = 0, y = 257)
 
         # Defining a background color for the Canvas
-        self.background = Canvas(self.root, bg = 'white', bd = 5, relief = FLAT, height = 510, width = 850)
+        self.background = Canvas(self.root, bg = 'white', bd = 5, relief = FLAT, height = 510, width = 1370)
         self.background.place(x = 80, y = 20)
  
  
