@@ -2,19 +2,11 @@
  Handwritten text recognition using CNN with EMNIST dataset.
 
 ## Intro
-A simple neural network with the following layers is used to recognise hadnwritten text.
-- Flatten layer (784)
-- Dense layer (256)(relu)
-- Dense layer (128)(relu)
-- Dense layer (62)(Output)(softmax)
+Handwritten text recognition using various neural networks. 
 
-### Model 2
-- Conv2D layer (32)(kernel = 5)(relu)
-- MaxPool2D layer
-- Dropout (0.3)
-- Flatten
-- Dense Layer(128)(relu)
-- Dense Layer (62)(output)(softmax)
+I am trying out multiple variations right now.
+
+To check the details of the models, refer to [Model Details](https://github.com/ShambaC/Handwritten-Text-Recognition/blob/main/Model_Details.md)
 
 The Extended MNIST or [EMNIST dataset](https://www.nist.gov/itl/products-and-services/emnist-dataset) is used to train the model.
 Specifically the byclass set is used as it had data for all the digits and both capital and small letters
