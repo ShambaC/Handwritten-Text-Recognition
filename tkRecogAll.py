@@ -87,7 +87,9 @@ def recog(img) :
         spaces.append(space)
 
     ## Find out the mean space
-    avg_spacing = sum(spaces) / len(spaces)
+    avg_spacing = 0
+    if len(spaces) > 0 :
+        avg_spacing = sum(spaces) / len(spaces)
 
     ## If a space is greater than the mean space then it would mean a space between two words
     spaceCount = 1
