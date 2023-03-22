@@ -1,5 +1,6 @@
 # Handwritten Text Recognition
- Handwritten text recognition using CNN with EMNIST dataset.
+ Handwritten text recognition using Neural Networks with EMNIST dataset.
+ Main model is not a ConvNet.
 
 ## Intro
 Handwritten text recognition using various neural networks. 
