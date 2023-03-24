@@ -61,7 +61,7 @@ x_val = tf.keras.utils.normalize(x_val, axis= 1)
 
 ## Define the model
 model = tf.keras.models.Sequential()
-model.add(tf.keras.applications.resnet50.ResNet50(input_shape= (28, 28, 1), weights= None, include_top= False))
+model.add(tf.keras.applications.resnet50.ResNet50(input_shape= (32, 32, 1), weights= None, include_top= False))
 model.add(tf.keras.layers.GlobalAveragePooling2D())
 model.add(tf.keras.layers.Dense(62, activation= 'softmax'))
 
