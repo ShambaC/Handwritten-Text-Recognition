@@ -23,10 +23,13 @@ y_data = idx2numpy.convert_from_file(f"{data_path}/emnist-byclass-train-labels-i
 # Change res because resnet needs 32x32
 import cv2
 
-x_data = np.array([cv2.resize(image, (32, 32), interpolation= cv2.INTER_LANCZOS4) for image in x_data])
+x_data = np.array([cv2.resize(image, (32, 32), interpolation= cv2.INTER_LANCZOS4) for image in x_data], dtype= np.float32)
 
 # Reshape
-x_data = x_data.reshape(x_data.shape[0], x_data.shape[1], x_data.shape[2], 1)
+x_data = np.expand_dims(x_data, axis= -1)
+
+# Normalize
+x_data /= 255.0
 
 # Configs
 learning_rate = 0.001
@@ -54,10 +57,6 @@ import time
 
 t = int(time.time())
 model_path = f"Models/{t}"
-
-## Normalize the dataset
-x_train = tf.keras.utils.normalize(x_train, axis= 1)
-x_val = tf.keras.utils.normalize(x_val, axis= 1)
 
 ## Define the model
 model = tf.keras.models.Sequential()

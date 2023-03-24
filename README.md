@@ -3,6 +3,8 @@
  Main model is not a ConvNet.
 
 ## Intro
+SOMEONE HELP ME TRAIN MODEL 4, I JUST WANNA SEE THEM NUMBERS.
+
 Handwritten text recognition using various neural networks. 
 
 I am trying out multiple variations right now.
