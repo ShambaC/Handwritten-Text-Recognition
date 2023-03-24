@@ -98,7 +98,7 @@ def recog(img) :
             letters.insert(i + spaceCount, "SPACE")
             spaceCount += 1
 
-    #Define a string to store the recognized letters
+    # Define a string to store the recognized letters
     word_letters = ""
 
     # Iterate through the cropped images

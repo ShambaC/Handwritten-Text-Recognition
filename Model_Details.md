@@ -36,4 +36,13 @@ I am planning on doing a ResNet but the concept seems scary.
 
 I have heard that LSTM RNN is good for this. But again that's scary.
 
+<details>
+<summary>PS PS</summary>
+
+I deleted model 4 because it was faulty. IDK why tho and can't be bothered to check.
+
+I am slowly coming to the conclusion that with this dataset I cannot get past the 84% threshold. The conv nets produce weird results in inference despite having better stats.
+
+</details>
+
 </details>
