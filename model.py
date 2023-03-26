@@ -75,7 +75,7 @@ reduceLROnPlat = tf.keras.callbacks.ReduceLROnPlateau(monitor = "val_loss", fact
 ### Save the model whenever validation loss hits a new low.
 checkpoint = tf.keras.callbacks.ModelCheckpoint(f"{model_path}/cp.meow", monitor= 'val_loss', verbose= 1, save_best_only= True, mode= 'min')
 
-## Convert dataset into tensor and handle batches with CPU
+## Convert dataset into a dataset object and handle batches with CPU
 '''
 This is done as GPU runs out of memory. Tensorflow doesn't handle batches well and tries to load the whole dataset onto GPU.
 '''
