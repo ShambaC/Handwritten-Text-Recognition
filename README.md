@@ -125,5 +125,5 @@ All screenshots are taken with best results. Totally not biased screenshotting.
     - It will add spaces even though they are not needed. Because of-course the space detection is a heuristic approach.
 
 ### 📝 To do list :
-- [ ] Make improved models to raise the accuracy
+- [x] Make improved models to raise the accuracy
 - [ ] Improve the preprocessing of images
