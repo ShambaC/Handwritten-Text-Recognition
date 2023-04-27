@@ -3,3 +3,6 @@ Dataset/
 
 # Model very private, no showy showy
 Models/
+
+# Ignore cached bytecode
+__pycache__/
