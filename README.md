@@ -76,7 +76,7 @@ The logs are located at the following folder : `Models/{timestamp}/logs`
 | 1679033527 |     1     |  0.4489   | 0.8467        |[Download](https://cdn.discordapp.com/attachments/559309816640831489/1086345880170418236/Models1.zip)|
 | 1679036461 |     1     |  0.4381   | 0.8480        |[Download](https://cdn.discordapp.com/attachments/559309816640831489/1086345880585638039/Models2.zip)|
 | 1679220168 |     2     |  0.3837   | 0.8616        |[Download](https://cdn.discordapp.com/attachments/559309816640831489/1086956826173640724/Models3.zip)|
-| 1679378923 |     3     |  0.3655   | 0.8679        |[Download](https://files.catbox.moe/i7ngiw.zip)|
+| 1679378923 |     3     |  0.3655   | 0.8679        |[Download](https://cdn.discordapp.com/attachments/559309816640831489/1100994180001566801/Models4.zip)|
 
 ### 🏃‍♂️ Run the model :
 - Run the `tkRecogIndv.py` script to check for individual characters only.
