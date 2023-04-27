@@ -81,6 +81,8 @@ The logs are located at the following folder : `Models/{timestamp}/logs`
 ### 🏃‍♂️ Run the model :
 - Run the `tkRecogIndv.py` script to check for individual characters only.
 - Run the `tkRecogAll.py` script to recognize words along with numbers.
+- Run the `textrecog_ui.py` script for realtime results.
+    - But this needs `recogScript.py` to be configured.
 
 IN BOTH CASES MAKE SURE TO EDIT THE `unixTime` VARIABLE TO YOUR MODEL'S FOLDER.
 
