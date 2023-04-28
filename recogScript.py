@@ -47,7 +47,7 @@ def recog(img) :
     # Detect letters
     regions, rects = mser.detectRegions(bw)
 
-        # Empty list to store the coordinates of each rectangle
+    # Empty list to store the coordinates of each rectangle
     rects2 = []
     for (x, y, w, h) in rects :
         points = []
