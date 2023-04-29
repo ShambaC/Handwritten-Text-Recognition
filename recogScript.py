@@ -155,7 +155,11 @@ def recog(img, use_MSER = True) :
 
     # Crop each letter and store them
     for (x1, y1, x2, y2) in rects3 :
-        cropped = img[y2:y1, x1:x2]
+        cropped = []
+        if use_MSER :
+            cropped = img[y1:y2, x1:x2]
+        else :
+            cropped = img[y2:y1, x1:x2]
         letters.append(cropped)
 
     # Detect spaces between multiple words

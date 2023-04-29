@@ -145,7 +145,11 @@ def detect(imgIn, use_MSER = True) :
 
     # Crop each letter and store them
     for (x1, y1, x2, y2) in rects3 :
-        cropped = img[y2:y1, x1:x2]
+        cropped = []
+        if use_MSER :
+            cropped = img[y1:y2, x1:x2]
+        else :
+            cropped = img[y2:y1, x1:x2]
         letters.append(cropped)
         cv2.rectangle(img, (x1, y1), (x2, y2), color= (255, 0, 255), thickness= 1)
 
@@ -258,7 +262,7 @@ class Draw() :
         y1 = y + self.background.winfo_height()
         img = ImageGrab.grab().crop((x + 7 , y + 7, x1 - 7, y1 - 7))
 
-        detect(img, False)
+        detect(img)
         
 
 root = Tk()
