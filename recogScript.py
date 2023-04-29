@@ -25,6 +25,11 @@ ModelPath = f"Models/{unixTime}/model.meow"
 model = tf.keras.models.load_model(ModelPath)
 
 # Alternative method to MSER
+# Time comparison of various methods :
+# MSER time : 0.046875s
+# Alt time (opti) : 0.015625s
+# alt time (unopti) : 1.859375s
+
 def altMSER(img) :
     image = np.copy(img)
 
