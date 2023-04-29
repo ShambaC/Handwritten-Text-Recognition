@@ -67,18 +67,27 @@ def altMSER(img) :
                 x = rowCount
         else :
             if x != -1 and y != -1 :
-                box = (x, y, rowCount - x, y_low - y)
+                area = abs((rowCount - x) * (y_low - y))
+
+                if area > minArea and area < maxArea :
+                    box = (x, y, rowCount - x, y_low - y)
+                    rects.append(box)
+
                 x = -1
                 y = -1
                 y_low = -1
-                rects.append(box)
+
         if rowCount == h - 1 :
             if x != -1 and y != -1 :
-                box = (x, y, rowCount - x, y_low - y)
+                area = abs((rowCount - x) * (y_low - y))
+
+                if area > minArea and area < maxArea :
+                    box = (x, y, rowCount - x, y_low - y)
+                    rects.append(box)
+
                 x = -1
                 y = -1
                 y_low = -1
-                rects.append(box)
 
     # Unoptimized method
     # for i in range(w) :
