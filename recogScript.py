@@ -40,30 +40,59 @@ def manualMSER(img) :
     y = -1
     y_low = -1
 
-    for i in range(w) :
-        flag = True
-        for j in range(h) :
-            if image[j, i] == 0 :
-                flag = False
+    # Optimized approach
+    image  = np.transpose(image)
+    image = cv2.bitwise_not(image)
+    h, w = image.shape
 
-                if x == -1 :
-                    x = i
-                    y = j
-                    y_low = j
+    rowCount = -1
+    for rows in image :
+        rowCount += 1
+        if np.count_nonzero(rows) > 0 :
+            t1 = np.nonzero(rows)[0][0]
+            t2 = np.nonzero(rows)[0][-1]
 
-                if j < y :
-                    y = j
-                
-                if j > y_low :
-                    y_low = j
+            if y_low == -1 or t1 < y_low :
+                y_low = t1
 
-        if flag :
+            if y == -1 or t2 > y :
+                y = t2
+
+            if x == -1 :
+                x = rowCount
+        else :
             if x != -1 and y != -1 :
-                box = (x, y, i - x, y_low - y)
+                box = (x, y, rowCount - x, y_low - y)
                 x = -1
                 y = -1
                 y_low = -1
                 rects.append(box)
+
+    # Unoptimized method
+    # for i in range(w) :
+    #     flag = True
+    #     for j in range(h) :
+    #         if image[j, i] == 0 :
+    #             flag = False
+
+    #             if x == -1 :
+    #                 x = i
+    #                 y = j
+    #                 y_low = j
+
+    #             if j < y :
+    #                 y = j
+                
+    #             if j > y_low :
+    #                 y_low = j
+
+    #     if flag :
+    #         if x != -1 and y != -1 :
+    #             box = (x, y, i - x, y_low - y)
+    #             x = -1
+    #             y = -1
+    #             y_low = -1
+    #             rects.append(box)
     
     return rects
 
@@ -106,23 +135,27 @@ def recog(img, use_MSER = True) :
             
         rects2.append(points)
 
-    # Stores the coords but removes coords that are present within another bounding box.
-    # This prevents loops in letters being detected separately
     rects3 = []
-    for line in rects2 :
-            flag = False
-            for line2 in rects2 :
-                if line[0] > line2[0] and line[1] > line2[1] and line[2] < line2[2] and line[3] < line2[3] :
-                    flag = True
-            if not flag :
-                rects3.append(line)
 
-    # Sort the coords from left to right
-    rects3.sort(key= lambda x : x[0])
+    if use_MSER :
+        # Stores the coords but removes coords that are present within another bounding box.
+        # This prevents loops in letters being detected separately    
+        for line in rects2 :
+                flag = False
+                for line2 in rects2 :
+                    if line[0] > line2[0] and line[1] > line2[1] and line[2] < line2[2] and line[3] < line2[3] :
+                        flag = True
+                if not flag :
+                    rects3.append(line)
+
+        # Sort the coords from left to right
+        rects3.sort(key= lambda x : x[0])
+    else :
+        rects3 = rects2
 
     # Crop each letter and store them
     for (x1, y1, x2, y2) in rects3 :
-        cropped = img[y1:y2, x1:x2]
+        cropped = img[y2:y1, x1:x2]
         letters.append(cropped)
 
     # Detect spaces between multiple words

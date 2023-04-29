@@ -9,7 +9,6 @@ import cv2
 
 def manualMSER(img) :
     image = np.copy(img)
-    
 
     h, w = image.shape
     img_size = h * w
@@ -23,41 +22,72 @@ def manualMSER(img) :
     y = -1
     y_low = -1
 
-    
 
-    for i in range(w) :
-        flag = True
-        for j in range(h) :
-            if image[j, i] == 0 :
-                flag = False
+    # Optimized method
+    image  = np.transpose(image)
+    image = cv2.bitwise_not(image)
+    h, w = image.shape
 
-                if x == -1 :
-                    x = i
-                    y = j
-                    y_low = j
+    rowCount = -1
+    for rows in image :
+        rowCount += 1
+        nonZeroCount = np.count_nonzero(rows)
+        if nonZeroCount > 0 :
+            t1 = np.nonzero(rows)[0][0]
+            t2 = np.nonzero(rows)[0][-1]
 
-                if j < y :
-                    y = j
-                
-                if j > y_low :
-                    y_low = j
+            if y_low == -1 or t1 < y_low :
+                y_low = t1
 
-        if flag :
+            if y == -1 or t2 > y :
+                y = t2
+
+            if x == -1 :
+                x = rowCount
+
+        elif nonZeroCount <= 0 :
             if x != -1 and y != -1 :
-                box = (x, y, i - x, y_low - y)
+                box = (x, y, rowCount - x, y_low - y)
                 x = -1
                 y = -1
                 y_low = -1
                 rects.append(box)
+
+    # Unoptimized method
+    # for i in range(w) :
+    #     flag = True
+    #     for j in range(h) :
+    #         if image[j, i] == 0 :
+    #             flag = False
+
+    #             if x == -1 :
+    #                 x = i
+    #                 y = j
+    #                 y_low = j
+
+    #             if j < y :
+    #                 y = j
+                
+    #             if j > y_low :
+    #                 y_low = j
+
+    #     if flag :
+    #         if x != -1 and y != -1 :
+    #             box = (x, y, i - x, y_low - y)
+    #             x = -1
+    #             y = -1
+    #             y_low = -1
+    #             rects.append(box)
     
     return rects
 
 
-def detect(img, use_MSER = True) :
+def detect(imgIn, use_MSER = True) :
     
     # Create an empty list to store the cropped images of the letters
     letters = []
-
+    
+    img = np.copy(imgIn)
     img = np.array(img)
     (h, w) = img.shape[: 2]
     image_size = h * w
@@ -68,6 +98,8 @@ def detect(img, use_MSER = True) :
 
     rects = []
 
+    import time
+
     if use_MSER :
         # Init MSER
         mser = cv2.MSER_create()
@@ -75,9 +107,13 @@ def detect(img, use_MSER = True) :
         mser.setMinArea(10)
 
         # Detect letters
+        start = time.process_time()
         regions, rects = mser.detectRegions(bw)
+        print(f"MSER time : {time.process_time() - start}")
     else :
+        start = time.process_time()
         rects = manualMSER(bw)
+        print(f"alt time (opti) : {time.process_time() - start}")        
 
     # Empty list to store the coordinates of each rectangle
     rects2 = []
@@ -90,23 +126,26 @@ def detect(img, use_MSER = True) :
         
         rects2.append(points)
 
+    rects3 = []
+    if use_MSER :
     # Stores the coords but removes coords that are present within another bounding box.
     # This prevents loops in letters being detected separately
-    rects3 = []
-    for line in rects2 :
-            flag = False
-            for line2 in rects2 :
-                if line[0] > line2[0] and line[1] > line2[1] and line[2] < line2[2] and line[3] < line2[3] :
-                    flag = True
-            if not flag :
-                rects3.append(line)
+        for line in rects2 :
+                flag = False
+                for line2 in rects2 :
+                    if line[0] > line2[0] and line[1] > line2[1] and line[2] < line2[2] and line[3] < line2[3] :
+                        flag = True
+                if not flag :
+                    rects3.append(line)
 
-    # Sort the coords from left to right
-    rects3.sort(key= lambda x : x[0])
+        # Sort the coords from left to right
+        rects3.sort(key= lambda x : x[0])
+    else :
+        rects3 = rects2
 
     # Crop each letter and store them
     for (x1, y1, x2, y2) in rects3 :
-        cropped = img[y1:y2, x1:x2]
+        cropped = img[y2:y1, x1:x2]
         letters.append(cropped)
         cv2.rectangle(img, (x1, y1), (x2, y2), color= (255, 0, 255), thickness= 1)
 
