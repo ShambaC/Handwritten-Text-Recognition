@@ -20,8 +20,9 @@ learning_rate = 0.0005
 train_epochs = 50
 train_workers = 20
 # Validation split value is the amount for validation data and not the train data
-val_split = 0.1
+val_split = 0.2
 batch_size = 100
+dropout = 0.3
 
 # Validation split and shuffle
 from sklearn.model_selection import train_test_split
@@ -51,7 +52,7 @@ model = tf.keras.models.Sequential()
 model.add(tf.keras.layers.Flatten(input_shape= (28, 28)))
 model.add(tf.keras.layers.Dense(256, activation= 'relu'))
 model.add(tf.keras.layers.Dense(128, activation= 'relu'))
-model.add(tf.keras.layers.Dropout(rate= 0.45))
+model.add(tf.keras.layers.Dropout(rate= dropout))
 model.add(tf.keras.layers.Dense(62, activation= 'softmax'))
 
 ## Compile the model
