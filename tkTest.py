@@ -7,7 +7,53 @@ Sorts the letters from left to right and then displays them.
 import numpy as np
 import cv2
 
-def detect(img) :
+def manualMSER(img) :
+    image = np.copy(img)
+    
+
+    h, w = image.shape
+    img_size = h * w
+
+    maxArea = int(img_size / 2)
+    minArea = 10
+    
+    rects = []
+
+    x = -1
+    y = -1
+    y_low = -1
+
+    
+
+    for i in range(w) :
+        flag = True
+        for j in range(h) :
+            if image[j, i] == 0 :
+                flag = False
+
+                if x == -1 :
+                    x = i
+                    y = j
+                    y_low = j
+
+                if j < y :
+                    y = j
+                
+                if j > y_low :
+                    y_low = j
+
+        if flag :
+            if x != -1 and y != -1 :
+                box = (x, y, i - x, y_low - y)
+                x = -1
+                y = -1
+                y_low = -1
+                rects.append(box)
+    
+    return rects
+
+
+def detect(img, use_MSER = True) :
     
     # Create an empty list to store the cropped images of the letters
     letters = []
@@ -15,16 +61,23 @@ def detect(img) :
     img = np.array(img)
     (h, w) = img.shape[: 2]
     image_size = h * w
-    mser = cv2.MSER_create()
-    mser.setMaxArea(int(image_size / 2))
-    mser.setMinArea(10)
 
     # Convert to grayscale and binarize with otsu method
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     _, bw = cv2.threshold(gray, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
 
-    # Detect letters
-    regions, rects = mser.detectRegions(bw)
+    rects = []
+
+    if use_MSER :
+        # Init MSER
+        mser = cv2.MSER_create()
+        mser.setMaxArea(int(image_size / 2))
+        mser.setMinArea(10)
+
+        # Detect letters
+        regions, rects = mser.detectRegions(bw)
+    else :
+        rects = manualMSER(bw)
 
     # Empty list to store the coordinates of each rectangle
     rects2 = []
@@ -65,7 +118,9 @@ def detect(img) :
         spaces.append(space)
 
     ## Find out the mean space
-    avg_spacing = sum(spaces) / len(spaces)
+    avg_spacing = 0
+    if len(spaces) > 0 :
+        avg_spacing = sum(spaces) / len(spaces)
 
     ## If a space is greater than the mean space then it would mean a space between two words
     spaceCount = 1
@@ -164,7 +219,7 @@ class Draw() :
         y1 = y + self.background.winfo_height()
         img = ImageGrab.grab().crop((x + 7 , y + 7, x1 - 7, y1 - 7))
 
-        detect(img)
+        detect(img, False)
         
 
 root = Tk()

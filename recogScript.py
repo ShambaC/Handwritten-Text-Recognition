@@ -24,8 +24,51 @@ ModelPath = f"Models/{unixTime}/model.meow"
 
 model = tf.keras.models.load_model(ModelPath)
 
+# Alternative method to MSER
+def manualMSER(img) :
+    image = np.copy(img)
+
+    h, w = image.shape
+    img_size = h * w
+
+    maxArea = int(img_size / 2)
+    minArea = 10
+    
+    rects = []
+
+    x = -1
+    y = -1
+    y_low = -1
+
+    for i in range(w) :
+        flag = True
+        for j in range(h) :
+            if image[j, i] == 0 :
+                flag = False
+
+                if x == -1 :
+                    x = i
+                    y = j
+                    y_low = j
+
+                if j < y :
+                    y = j
+                
+                if j > y_low :
+                    y_low = j
+
+        if flag :
+            if x != -1 and y != -1 :
+                box = (x, y, i - x, y_low - y)
+                x = -1
+                y = -1
+                y_low = -1
+                rects.append(box)
+    
+    return rects
+
 # Method to perform the recognition
-def recog(img) :
+def recog(img, use_MSER = True) :
     # Create an empty list to store the cropped images of the letters
     letters = []
 
@@ -34,19 +77,24 @@ def recog(img) :
     (h, w) = img.shape[: 2]
     image_size = h * w
 
-    # Create an Maximally Stable External Region Extractor
-    # More on https://docs.opencv.org/4.x/d3/d28/classcv_1_1MSER.html
-    mser = cv2.MSER_create()
-    mser.setMaxArea(int(image_size / 2))
-    mser.setMinArea(10)
-
     # Convert to grayscale and binarize with otsu method
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     _, bw = cv2.threshold(gray, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
 
-    # Detect letters
-    regions, rects = mser.detectRegions(bw)
+    rects = []
 
+    if use_MSER :
+        # Create an Maximally Stable External Region Extractor
+        # More on https://docs.opencv.org/4.x/d3/d28/classcv_1_1MSER.html
+        mser = cv2.MSER_create()
+        mser.setMaxArea(int(image_size / 2))
+        mser.setMinArea(10)
+
+        # Detect letters
+        regions, rects = mser.detectRegions(bw)
+    else :
+        rects = manualMSER(bw)
+    
     # Empty list to store the coordinates of each rectangle
     rects2 = []
     for (x, y, w, h) in rects :

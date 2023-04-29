@@ -78,9 +78,12 @@ class Draw() :
 
         self.background.create_oval(x1, y1, x2, y2, fill = self.pointer, outline = self.pointer, width = self.pointer_size)
 
-    # Update out[ut Box]
+    # Update output Box
     def output(self, word) :
-        self.outbox.config(text=word)
+        if word == "" :
+            self.outbox.config(text="RESULT TEXT HERE ...")
+        else :
+            self.outbox.config(text=word)
 
     def rec_drawing(self, event):
         # Get the coordinate values of the canvas
@@ -93,7 +96,7 @@ class Draw() :
         # Screenshot the whole display and then crop out the canvas
         img = ImageGrab.grab().crop((x + 7 , y + 7, x1 - 7, y1 - 7))
 
-        res = recog(img)
+        res = recog(img, False)
         self.output(res)
 
 root = Tk()
