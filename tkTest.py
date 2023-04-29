@@ -7,7 +7,7 @@ Sorts the letters from left to right and then displays them.
 import numpy as np
 import cv2
 
-def manualMSER(img) :
+def altMSER(img) :
     image = np.copy(img)
 
     h, w = image.shape
@@ -112,7 +112,7 @@ def detect(imgIn, use_MSER = True) :
         print(f"MSER time : {time.process_time() - start}")
     else :
         start = time.process_time()
-        rects = manualMSER(bw)
+        rects = altMSER(bw)
         print(f"alt time (opti) : {time.process_time() - start}")        
 
     # Empty list to store the coordinates of each rectangle

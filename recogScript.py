@@ -25,7 +25,7 @@ ModelPath = f"Models/{unixTime}/model.meow"
 model = tf.keras.models.load_model(ModelPath)
 
 # Alternative method to MSER
-def manualMSER(img) :
+def altMSER(img) :
     image = np.copy(img)
 
     h, w = image.shape
@@ -122,7 +122,7 @@ def recog(img, use_MSER = True) :
         # Detect letters
         regions, rects = mser.detectRegions(bw)
     else :
-        rects = manualMSER(bw)
+        rects = altMSER(bw)
     
     # Empty list to store the coordinates of each rectangle
     rects2 = []
