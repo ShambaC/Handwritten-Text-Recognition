@@ -262,7 +262,7 @@ class Draw() :
         y1 = y + self.background.winfo_height()
         img = ImageGrab.grab().crop((x + 7 , y + 7, x1 - 7, y1 - 7))
 
-        detect(img)
+        detect(img, False)
         
 
 root = Tk()
