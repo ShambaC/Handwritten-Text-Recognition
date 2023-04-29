@@ -120,10 +120,10 @@ All screenshots are taken with best results. Totally not biased screenshotting.
 - Pad image on all sides with 4 pixels, resulting in a 28x28 image.
 
 ### ❌ Flaws in pre-processing :
-- Small 'i' is not detected properly as the dot of the 'i' and the bar count as separate characters.
+- ~Small 'i' is not detected properly as the dot of the 'i' and the bar count as separate characters.~ Fixed with the alternate method to MSER
 - Space detection will result in wrong output if the input is a single word.
     - It will add spaces even though they are not needed. Because of-course the space detection is a heuristic approach.
 
 ### 📝 To do list :
 - [x] Make improved models to raise the accuracy
-- [ ] Improve the preprocessing of images
+- [x] Improve the preprocessing of images
