@@ -60,18 +60,22 @@ class Draw() :
         #bind the rec_drawing method with mouse click release
         self.background.bind("<ButtonRelease-1>", self.rec_drawing)
 
+    # Change brush color to eraser
     def eraser(self) :
         self.pointer = self.erase
         self.pointer_size = 22
 
+    # Change brush color back
     def pen(self) :
         self.pointer = 'black'
         self.pointer_size = 17.5
 
+    # Clear the screen of all the objects drwan
     def clearScreen(self) :
         self.background.delete('all')
         self.output("RESULT TEXT HERE ...")
 
+    # Paint the elipses
     def paint(self, event) :
         x1, y1 = (event.x - 2), (event.y - 2)
         x2, y2 = (event.x + 2), (event.y + 2)
