@@ -127,3 +127,5 @@ All screenshots are taken with best results. Totally not biased screenshotting.
 ### 📝 To do list :
 - [x] Make improved models to raise the accuracy
 - [x] Improve the preprocessing of images
+- [ ] Remove MSER completely
+- [ ] Make a better UI
