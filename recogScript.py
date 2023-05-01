@@ -57,17 +57,17 @@ def altMSER(img) :
             t1 = np.nonzero(rows)[0][0]
             t2 = np.nonzero(rows)[0][-1]
 
-            if y_low == -1 or t1 < y_low :
-                y_low = t1
+            if y == -1 or t1 < y :
+                y = t1
 
-            if y == -1 or t2 > y :
-                y = t2
+            if y_low == -1 or t2 > y_low :
+                y_low = t2
 
             if x == -1 :
                 x = rowCount
         else :
             if x != -1 and y != -1 :
-                area = abs((rowCount - x) * (y_low - y))
+                area = (rowCount - x) * (y_low - y)
 
                 if area > minArea and area < maxArea :
                     box = (x, y, rowCount - x, y_low - y)
@@ -79,7 +79,7 @@ def altMSER(img) :
 
         if rowCount == h - 1 :
             if x != -1 and y != -1 :
-                area = abs((rowCount - x) * (y_low - y))
+                area = (rowCount - x) * (y_low - y)
 
                 if area > minArea and area < maxArea :
                     box = (x, y, rowCount - x, y_low - y)
@@ -177,10 +177,7 @@ def recog(img, use_MSER = True) :
     # Crop each letter and store them
     for (x1, y1, x2, y2) in rects3 :
         cropped = []
-        if use_MSER :
-            cropped = img[y1:y2, x1:x2]
-        else :
-            cropped = img[y2:y1, x1:x2]
+        cropped = img[y1:y2, x1:x2]
         letters.append(cropped)
 
     # Detect spaces between multiple words
