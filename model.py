@@ -12,15 +12,20 @@ a-z
 '''
 
 # Load training data
-x_data = idx2numpy.convert_from_file(f"{data_path}/emnist-byclass-train-images-idx3-ubyte")
-y_data = idx2numpy.convert_from_file(f"{data_path}/emnist-byclass-train-labels-idx1-ubyte")
+# By Class
+x_data = idx2numpy.convert_from_file(f"{data_path}/ByClass/emnist-byclass-train-images-idx3-ubyte")
+y_data = idx2numpy.convert_from_file(f"{data_path}/ByClass/emnist-byclass-train-labels-idx1-ubyte")
+
+# Balanced
+# x_data = idx2numpy.convert_from_file(f"{data_path}/Balanced/emnist-balanced-train-images-idx3-ubyte")
+# y_data = idx2numpy.convert_from_file(f"{data_path}/Balanced/emnist-balanced-train-labels-idx1-ubyte")
 
 # Configs
 learning_rate = 0.0005
 train_epochs = 50
 train_workers = 20
 # Validation split value is the amount for validation data and not the train data
-val_split = 0.2
+val_split = 0.1
 batch_size = 100
 dropout = 0.3
 
@@ -53,7 +58,10 @@ model.add(tf.keras.layers.Flatten(input_shape= (28, 28)))
 model.add(tf.keras.layers.Dense(256, activation= 'relu'))
 model.add(tf.keras.layers.Dense(128, activation= 'relu'))
 model.add(tf.keras.layers.Dropout(rate= dropout))
+# For ByClass Set
 model.add(tf.keras.layers.Dense(62, activation= 'softmax'))
+# For Balanced Set
+# model.add(tf.keras.layers.Dense(47, activation= 'softmax'))
 
 ## Compile the model
 model.compile(

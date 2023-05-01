@@ -2,8 +2,13 @@ import idx2numpy
 
 # Load test set
 data_path = "Dataset/EMNIST"
-x_test = idx2numpy.convert_from_file(f"{data_path}/emnist-byclass-test-images-idx3-ubyte")
-y_test = idx2numpy.convert_from_file(f"{data_path}/emnist-byclass-test-labels-idx1-ubyte")
+# By Class
+x_test = idx2numpy.convert_from_file(f"{data_path}/ByClass/emnist-byclass-test-images-idx3-ubyte")
+y_test = idx2numpy.convert_from_file(f"{data_path}/ByClass/emnist-byclass-test-labels-idx1-ubyte")
+
+# Balanced
+# x_test = idx2numpy.convert_from_file(f"{data_path}/Balanced/emnist-balanced-test-images-idx3-ubyte")
+# y_test = idx2numpy.convert_from_file(f"{data_path}/Balanced/emnist-balanced-test-labels-idx1-ubyte")
 
 ## Reshape for Model 2
 x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], x_test.shape[2], 1)
