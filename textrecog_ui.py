@@ -100,7 +100,7 @@ class Draw() :
         # Screenshot the whole display and then crop out the canvas
         img = ImageGrab.grab().crop((x + 7 , y + 7, x1 - 7, y1 - 7))
 
-        res = recog(img, False)
+        res = recog(img)
         self.output(res)
 
 root = Tk()

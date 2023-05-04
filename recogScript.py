@@ -118,34 +118,21 @@ def altMSER(img) :
     return rects
 
 # Method to perform the recognition
-def recog(img, use_MSER = True) :
+def recog(img) :
     # Create an empty list to store the cropped images of the letters
     letters = []
 
     # Convert image to cv2 format from Pillow
     img = np.array(img)
-    (h, w) = img.shape[: 2]
-    image_size = h * w
 
     # Convert to grayscale and binarize with otsu method
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     _, bw = cv2.threshold(gray, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
 
     rects = []
-
-    if use_MSER :
-        # Create an Maximally Stable External Region Extractor
-        # More on https://docs.opencv.org/4.x/d3/d28/classcv_1_1MSER.html
-        mser = cv2.MSER_create()
-        mser.setMaxArea(int(image_size / 2))
-        mser.setMinArea(10)
-
-        # Detect letters
-        regions, rects = mser.detectRegions(bw)
-    else :
-        rects = altMSER(bw)
+    rects = altMSER(bw)
     
-    # Empty list to store the coordinates of each rectangle
+    # Empty list to store the top left and bottom right coordinates of each rectangle
     rects2 = []
     for (x, y, w, h) in rects :
         points = []
@@ -156,26 +143,8 @@ def recog(img, use_MSER = True) :
             
         rects2.append(points)
 
-    rects3 = []
-
-    if use_MSER :
-        # Stores the coords but removes coords that are present within another bounding box.
-        # This prevents loops in letters being detected separately    
-        for line in rects2 :
-                flag = False
-                for line2 in rects2 :
-                    if line[0] > line2[0] and line[1] > line2[1] and line[2] < line2[2] and line[3] < line2[3] :
-                        flag = True
-                if not flag :
-                    rects3.append(line)
-
-        # Sort the coords from left to right
-        rects3.sort(key= lambda x : x[0])
-    else :
-        rects3 = rects2
-
     # Crop each letter and store them
-    for (x1, y1, x2, y2) in rects3 :
+    for (x1, y1, x2, y2) in rects2 :
         cropped = []
         cropped = img[y1:y2, x1:x2]
         letters.append(cropped)
@@ -184,7 +153,7 @@ def recog(img, use_MSER = True) :
     ## Calculate and store spacing between each character in a list
     spaces = []
     for i in range(len(letters) - 1) :
-        space = rects3[i + 1][0] - rects3[i][0]
+        space = rects2[i + 1][0] - rects2[i][0]
         spaces.append(space)
 
     ## Find out the mean space
