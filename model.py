@@ -16,9 +16,6 @@ a-z
 x_data = idx2numpy.convert_from_file(f"{data_path}/ByClass/emnist-byclass-train-images-idx3-ubyte")
 y_data = idx2numpy.convert_from_file(f"{data_path}/ByClass/emnist-byclass-train-labels-idx1-ubyte")
 
-# Balanced
-# x_data = idx2numpy.convert_from_file(f"{data_path}/Balanced/emnist-balanced-train-images-idx3-ubyte")
-# y_data = idx2numpy.convert_from_file(f"{data_path}/Balanced/emnist-balanced-train-labels-idx1-ubyte")
 
 # Configs
 learning_rate = 0.0005
@@ -60,8 +57,6 @@ model.add(tf.keras.layers.Dense(128, activation= 'relu'))
 model.add(tf.keras.layers.Dropout(rate= dropout))
 # For ByClass Set
 model.add(tf.keras.layers.Dense(62, activation= 'softmax'))
-# For Balanced Set
-# model.add(tf.keras.layers.Dense(47, activation= 'softmax'))
 
 ## Compile the model
 model.compile(
