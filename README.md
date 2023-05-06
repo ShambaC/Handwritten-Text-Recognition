@@ -101,7 +101,7 @@ All screenshots are taken with best results. Totally not biased screenshotting.
 ### 👨‍🏫 A little explanation on the pre-processing of images during inference :
 - First of all each characters in the image are separated into different images.
     - This is done as the model recognizes individual letters and complete words
-    - This done using MSER. So, words where the letters are joined together won't work (like cursive writing)
+    - This done using a [method](https://github.com/ShambaC/Handwritten-Text-Recognition/blob/main/Character_Detection_method.md) that makes it so that words where the letters are joined together won't work (like cursive writing)
 - Then a list is created with the 4 corners co-ordinates of each character.
 - Then a check is performed to detect detection rects within characters.
     - This happens with characters having a loop. For example :
@@ -122,10 +122,10 @@ All screenshots are taken with best results. Totally not biased screenshotting.
 ### ❌ Flaws in pre-processing :
 - ~Small 'i' is not detected properly as the dot of the 'i' and the bar count as separate characters.~ Fixed with the alternate method to MSER
 - Space detection will result in wrong output if the input is a single word.
-    - It will add spaces even though they are not needed. Because of-course the space detection is a heuristic approach.
+    - It will add spaces even though they are not needed.
 
 ### 📝 To do list :
 - [x] Make improved models to raise the accuracy
 - [x] Improve the preprocessing of images
-- [ ] Remove MSER completely
+- [x] Remove MSER completely
 - [ ] Make a better UI
