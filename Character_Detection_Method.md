@@ -42,3 +42,17 @@ This tupple is then appended to a list of rects and that list is returned.
 IMG PLACEHOLDER
 
 <i>Output Image</i>
+
+## ❓ Why ?
+
+This is my college project. Having MSER in it means I might have to explain it to the teachers. And I don't really understand it myself. So, to avoid any unecessary trouble I wrote a separate method. But this was also a struggle.
+
+The way I implemented the algorithm at first was not really nice performance wise. It was painfully slow. So, I studied up on various numpy methods and rewrote the implementation. This time around it was realllllly good.
+
+A comparison on how much time various methods took on the same input : 
+
+- MSER time : 0.046875s
+- Alt time (unoptimized) : 1.859375s
+- Alt time (optimized) : 0.015625s
+
+So my method is superior (⌐■_■)
