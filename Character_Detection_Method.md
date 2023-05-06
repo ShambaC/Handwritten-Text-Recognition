@@ -11,19 +11,19 @@ This method detects characters from a word in an image.
 
 Maximum and Minimum area of detection are defined.
 
-IMG PLACEHOLDER
+![image](https://user-images.githubusercontent.com/38806897/236636041-6bb5f895-6357-42da-9ed5-fc5c4774160a.png)
 
 <i>Input image</i>
 
 The image is transposed
 
-IMG PLACEHOLDER
+![image](https://user-images.githubusercontent.com/38806897/236636151-11f3dece-b0c9-4904-bb02-b1540a9ce444.png)
 
 <i>Image after transpose</i>
 
 The image is inverted
 
-IMG PLACEHOLDER
+![image](https://user-images.githubusercontent.com/38806897/236636208-bf2643a4-d5fa-4a29-ba3b-a5ef6fd829a8.png)
 
 <i>Inverted image</i>
 
@@ -39,7 +39,7 @@ Then the values are stored into a tuple like : `(top left X cord, top left Y cor
 
 This tupple is then appended to a list of rects and that list is returned.
 
-IMG PLACEHOLDER
+![image](https://user-images.githubusercontent.com/38806897/236636232-3cca6682-27c3-4455-a230-a79a57a7ce02.png)
 
 <i>Output Image</i>
 
