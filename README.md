@@ -101,7 +101,7 @@ All screenshots are taken with best results. Totally not biased screenshotting.
 ### 👨‍🏫 A little explanation on the pre-processing of images during inference :
 - First of all each characters in the image are separated into different images.
     - This is done as the model recognizes individual letters and complete words
-    - This done using a [method](https://github.com/ShambaC/Handwritten-Text-Recognition/blob/main/Character_Detection_method.md) that makes it so that words where the letters are joined together won't work (like cursive writing)
+    - This done using a [method](https://github.com/ShambaC/Handwritten-Text-Recognition/blob/main/Character_Detection_Method.md) that makes it so that words where the letters are joined together won't work (like cursive writing)
 - Then a list is created with the 4 corners co-ordinates of each character.
 - Then a check is performed to detect detection rects within characters.
     - This happens with characters having a loop. For example :
