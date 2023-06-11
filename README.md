@@ -97,6 +97,10 @@ All screenshots are taken with best results. Totally not biased screenshotting.
 ![image](https://user-images.githubusercontent.com/38806897/226188252-80c297ec-045f-4927-922f-36b163679cf6.png)
 
 <i>As you can see, the model cannot differentiate between capital and small 'O'.</i>
+ 
+![image](https://github.com/ShambaC/Handwritten-Text-Recognition/assets/38806897/45801d83-013e-4d82-87fe-016b1c48cfe3)
+
+<i>NEW UI !!</i>
 
 ### 👨‍🏫 A little explanation on the pre-processing of images during inference :
 - First of all each characters in the image are separated into different images.
