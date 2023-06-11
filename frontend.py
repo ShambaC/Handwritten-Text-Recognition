@@ -37,7 +37,6 @@ def paint(event) :
     sketch.create_oval(x1, y1, x2, y2, fill=pointer, outline = pointer, width = pointer_size)
 
 def rec_drawing(event):
-    print("Rec drawing event fired")
 
     # # Get the coordinate values of the canvas
     # x = root.winfo_rootx() + sketch.winfo_x()
@@ -53,7 +52,6 @@ def rec_drawing(event):
     x = root.winfo_rootx() + frame2.winfo_x()
     y = root.winfo_rooty() + frame2.winfo_y()
 
-    print(frame2.winfo_width(), frame2.winfo_height())
     x1 = x + frame2.winfo_width()
     y1 = y + frame2.winfo_height()
 
