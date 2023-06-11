@@ -6,3 +6,6 @@ Models/
 
 # Ignore cached bytecode
 __pycache__/
+
+# Build files
+build/
