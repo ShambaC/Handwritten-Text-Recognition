@@ -132,4 +132,6 @@ All screenshots are taken with best results. Totally not biased screenshotting.
 - [x] Make improved models to raise the accuracy
 - [x] Improve the preprocessing of images
 - [x] Remove MSER completely
-- [ ] Make a better UI
+- [x] Make a better UI
+ 
+✔️ All goals reached 🎉
