@@ -1,9 +1,157 @@
+import numpy as np
+import cv2
+
+def altMSER(img) :
+    image = np.copy(img)
+
+    h, w = image.shape
+    img_size = h * w
+
+    maxArea = int(img_size / 2)
+    minArea = 10
+    
+    rects = []
+
+    x = -1
+    y = -1
+    y_low = -1
+
+
+    # Optimized method
+    image  = np.transpose(image)
+    image = cv2.bitwise_not(image)
+    h, w = image.shape
+
+    rowCount = -1
+    for rows in image :
+        rowCount += 1
+        nonZeroCount = np.count_nonzero(rows)
+        if nonZeroCount > 0 :
+            t1 = np.nonzero(rows)[0][0]
+            t2 = np.nonzero(rows)[0][-1]
+
+            if y == -1 or t1 < y :
+                y = t1
+
+            if y_low == -1 or t2 > y_low :
+                y_low = t2
+
+            if x == -1 :
+                x = rowCount
+
+        elif nonZeroCount <= 0 :
+            if x != -1 and y != -1 :
+                area = (rowCount - x) * (y_low - y)
+
+                if area > minArea and area < maxArea :
+                    box = (x, y, rowCount - x, y_low - y)
+                    rects.append(box)
+                    print(box)
+
+                x = -1
+                y = -1
+                y_low = -1
+                
+        if rowCount == h - 1 :
+            if x != -1 and y != -1 :
+                area = (rowCount - x) * (y_low - y)
+
+                if area > minArea and area < maxArea :
+                    box = (x, y, rowCount - x, y_low - y)
+                    rects.append(box)
+
+                x = -1
+                y = -1
+                y_low = -1
+    
+    return rects
+
+def detect(imgIn) :
+    
+    # Create an empty list to store the cropped images of the letters
+    letters = []
+    
+    img = np.copy(imgIn)
+    img = np.array(img)
+
+    # Convert to grayscale and binarize with otsu method
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    _, bw = cv2.threshold(gray, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+
+    rects = []
+    rects = altMSER(bw)    
+
+    # Empty list to store the coordinates of each rectangle
+    rects2 = []
+    for (x, y, w, h) in rects :
+        points = []
+        points.append(x)
+        points.append(y)
+        points.append(x + w)
+        points.append(y + h)
+        
+        rects2.append(points)
+
+    # Crop each letter and store them
+    for (x1, y1, x2, y2) in rects2 :
+        cropped = []
+        cropped = img[y1:y2, x1:x2]
+        letters.append(cropped)
+        cv2.rectangle(img, (x1, y1), (x2, y2), color= (255, 0, 255), thickness= 1)
+
+    # Detect spaces between multiple words
+    ## Calculate and store spacing between each character in a list
+    spaces = []
+    for i in range(len(letters) - 1) :
+        space = rects2[i + 1][0] - rects2[i][0]
+        spaces.append(space)
+
+    ## Find out the mean space
+    avg_spacing = 0
+    if len(spaces) > 0 :
+        avg_spacing = sum(spaces) / len(spaces)
+
+    ## If a space is greater than the mean space then it would mean a space between two words
+    spaceCount = 1
+    for i in range(len(spaces)) :
+        if spaces[i] > avg_spacing :
+            letters.insert(i + spaceCount, "SPACE")
+            spaceCount += 1
+
+    index = -1
+    # Display each letter
+    for images in letters :
+        index += 1
+
+        if isinstance(images, str) :
+            print("space ", index)
+            continue
+        
+        images = images[:, :, 0]
+        h, w = images.shape
+
+        if h > w :
+            diff = int((h - w) / 2)
+            images = np.pad(images, ((0, 0), (diff, diff)), 'constant', constant_values= 255)
+        elif w > h :
+            diff = int((w - h) / 2)
+            images = np.pad(images, ((diff, diff), (0, 0)), 'constant', constant_values= 255)
+
+        cv2.imshow('window', images)
+        cv2.waitKey(1000)
+        cv2.destroyAllWindows()
+    
+    cv2.imshow('window', img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
 from tkinter import *
 from tkinter import ttk
 from PIL import Image, ImageTk
 import PIL.ImageGrab as ImageGrab
-from recogScript import *
+# from recogScript import *
 
+import time
 
 pointer="black"
 erase="white"
@@ -26,6 +174,7 @@ def clearScreen(event):
     outbox.config(text="RESULT TEXT HERE ...")
 
 def output(word):
+    print("outbox edit called")
     if word == "" :
         outbox.config(text="RESULT TEXT HERE ...")
     else :
@@ -37,19 +186,18 @@ def paint(event) :
     sketch.create_oval(x1, y1, x2, y2, fill=pointer, outline = pointer, width = pointer_size)
 
 def rec_drawing(event):
-    print("Rec drawing event fired")
+    # print("Rec drawing event fired")
 
-    # # Get the coordinate values of the canvas
+    # Get the coordinate values of the canvas
+    # print(root.winfo_rootx(), root.winfo_rooty(), sketch.winfo_x(), sketch.winfo_y())
     # x = root.winfo_rootx() + sketch.winfo_x()
     # y = root.winfo_rooty() + sketch.winfo_y()
 
+    # print(sketch.winfo_width(), sketch.winfo_height())
     # x1 = x + sketch.winfo_width()
     # y1 = y + sketch.winfo_height()
 
-    # # Screenshot the whole display and then crop out the canvas
-    # img = ImageGrab.grab().crop((x + 7 , y + 7, x1 - 7, y1 - 7))
-
-    # Get the coordinate values of the canvas
+    print(root.winfo_rootx(), root.winfo_rooty(), frame2.winfo_x(), frame2.winfo_y())
     x = root.winfo_rootx() + frame2.winfo_x()
     y = root.winfo_rooty() + frame2.winfo_y()
 
@@ -60,9 +208,13 @@ def rec_drawing(event):
     # Screenshot the whole display and then crop out the canvas
     img = ImageGrab.grab().crop((x + 24 , y + 17, x1 - 28, y1 - 185))
 
-    
-    res = recog(img)
-    output(res)
+    detect(img)
+
+    # print("recog method called")
+    # start = time.perf_counter()
+    # res = recog(img)
+    # print(time.perf_counter() - start)
+    # output(res)
 
 
 
@@ -154,7 +306,7 @@ sketch = Canvas(frame2)
 sketch.grid(column=0, row=1,columnspan=3)
 sketch.configure(background='White', height=465, width=1353, relief="raised")
 sketch.bind("<B1-Motion>", paint)
-sketch.bind("<ButtonRelease-1>", rec_drawing)
+sketch.bind("<Button-2>", rec_drawing)
 
 
 # Output Box

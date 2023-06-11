@@ -234,6 +234,7 @@ class Draw() :
     def det_drawing(self):
         
         # self.background update()
+        print(self.root.winfo_rootx(), self.root.winfo_rooty(), self.background.winfo_x(), self.background.winfo_y())
         x = self.root.winfo_rootx() + self.background.winfo_x()
         y = self.root.winfo_rooty() + self.background.winfo_y()
  
