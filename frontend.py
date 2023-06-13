@@ -56,7 +56,7 @@ def rec_drawing(event):
     y1 = y + frame2.winfo_height()
 
     # Screenshot the whole display and then crop out the canvas
-    img = ImageGrab.grab().crop((x + 24 , y + 17, x1 - 28, y1 - 185))
+    img = ImageGrab.grab(all_screens= True).crop((x + 24 , y + 17, x1 - 28, y1 - 185))
 
     
     res = recog(img)
