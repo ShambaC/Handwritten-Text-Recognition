@@ -206,7 +206,7 @@ def rec_drawing(event):
     y1 = y + frame2.winfo_height()
 
     # Screenshot the whole display and then crop out the canvas
-    img = ImageGrab.grab(all_screens= True).crop((x + 24 , y + 17, x1 - 28, y1 - 185))
+    img = ImageGrab.grab(all_screens= True).crop((x + 24 , y + 17, x1 - 28, y1 - 198))
 
     detect(img)
 
@@ -310,7 +310,7 @@ sketch.bind("<Button-2>", rec_drawing)
 
 
 # Output Box
-outbox = Label(frame2, text="RESULT TEXT HERE ...", font=("Calibri",20,"bold"), fg='black', bg='#D8D3CD')
+outbox = Label(frame2, text="RESULT TEXT HERE ...", font=("Kristen ITC",20,"bold"), fg='black', bg='#99E6EC', borderwidth= 5, relief= 'solid')
 outbox.grid(row=2, column=0, sticky=(E,W), pady=30)
 outbox.configure(height=3, width=16)
 

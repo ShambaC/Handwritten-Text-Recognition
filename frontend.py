@@ -38,16 +38,6 @@ def paint(event) :
 
 def rec_drawing(event):
 
-    # # Get the coordinate values of the canvas
-    # x = root.winfo_rootx() + sketch.winfo_x()
-    # y = root.winfo_rooty() + sketch.winfo_y()
-
-    # x1 = x + sketch.winfo_width()
-    # y1 = y + sketch.winfo_height()
-
-    # # Screenshot the whole display and then crop out the canvas
-    # img = ImageGrab.grab().crop((x + 7 , y + 7, x1 - 7, y1 - 7))
-
     # Get the coordinate values of the canvas
     x = root.winfo_rootx() + frame2.winfo_x()
     y = root.winfo_rooty() + frame2.winfo_y()
@@ -56,7 +46,7 @@ def rec_drawing(event):
     y1 = y + frame2.winfo_height()
 
     # Screenshot the whole display and then crop out the canvas
-    img = ImageGrab.grab(all_screens= True).crop((x + 24 , y + 17, x1 - 28, y1 - 185))
+    img = ImageGrab.grab(all_screens= True).crop((x + 24 , y + 17, x1 - 28, y1 - 198))
 
     
     res = recog(img)
@@ -69,15 +59,7 @@ root = Tk()
 root.title("Handwritten Text Recognition")
 rooticon=PhotoImage(file= ".\icons\icons8-home-screen-100.png")
 root.iconphoto(False, rooticon)
-# root.columnconfigure(0, weight=1)
-# root.rowconfigure(0, weight=1)
-# root.minsize(800,500)
 root.configure(background="#D2DAFF" )
-# root['background']='#D2DAFF'
-# root.attributes("-fullscreen", True)
-# defining a style
-# s = ttk.Style()
-# s.configure('TButton', borderwidth=0, padding=6)
 
 Grid.rowconfigure(root,0,weight=1)
 Grid.columnconfigure(root,0,weight=1)
@@ -130,24 +112,6 @@ label = Label(frame2, image = whiteboard)
 label.grid(row=1, column=0)
 
 
-
-# Canvas example
-# class Sketchpad(Canvas):
-#     def __init__(self, parent, **kwargs):
-#         super().__init__(parent, **kwargs)
-#         self.bind("<ButtonRelease-1>", self.save_posn)
-#         self.bind("<B1-Motion>", self.draw)
-        
-#     def save_posn(self, event):
-#         self.lastx, self.lasty = event.x, event.y
-
-#     def draw(self, event):
-#         x1, y1 = (event.x - 2), (event.y - 2)
-#         x2, y2 = (event.x + 2), (event.y + 2)
-#         self.create_oval(x1, y1, x2, y2, fill = self.pointer, outline = self.pointer, width = self.pointer_size)
-#         self.save_posn(event)
-
-
 sketch = Canvas(frame2)
 sketch.grid(column=0, row=1,columnspan=3)
 sketch.configure(background='White', height=465, width=1353, relief="raised")
@@ -156,24 +120,9 @@ sketch.bind("<ButtonRelease-1>", rec_drawing)
 
 
 # Output Box
-outbox = Label(frame2, text="RESULT TEXT HERE ...", font=("Calibri",20,"bold"), fg='black', bg='#D8D3CD')
+outbox = Label(frame2, text="RESULT TEXT HERE ...", font=("Kristen ITC",20,"bold"), fg='black', bg='#99E6EC', borderwidth= 5, relief= 'solid')
 outbox.grid(row=2, column=0, sticky=(E,W), pady=30)
 outbox.configure(height=3, width=16)
-
-# pen_button.grid(row=0, column=3, columnspan=2 , padx=115, pady=30)
-# eraser_button.grid(row=0, column=7,columnspan=2, padx=115, pady=30)
-# clear_button.grid(row=0, column=11, columnspan=2, padx=115, pady=30)
-
-# def pen() :
-#     pointer = 'black'
-#     pointer_size = 17.5
-
-
-
-# mainframe = ttk.Frame(root, padding="3 3 12 12")
-# mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
-# root.columnconfigure(0, weight=1)
-# root.rowconfigure(0, weight=1)
 
 col_no=0
 weight_val=1
