@@ -9,3 +9,6 @@ __pycache__/
 
 # Build files
 build/
+
+# Check file
+show_model.py
