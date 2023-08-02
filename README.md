@@ -63,7 +63,7 @@ CPU usage was around 55%. My CPU is Ryzen 7 3750H.
 
 Python used 5 gigs of RAM 😥. I don't remember for which values but once the RAM usage went up to 10 gigs 😱.
 
-You can visualise the training using tensorboard. Run `tensorboard --logdir = path_to_logs` in terminal to start the server.
+You can visualise the training using tensorboard. Run `tensorboard --logdir path_to_logs` in terminal to start the server.
 
 The logs are located at the following folder : `Models/{timestamp}/logs`
 
