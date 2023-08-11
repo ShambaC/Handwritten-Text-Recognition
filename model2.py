@@ -20,19 +20,19 @@ a-z
 '''
 
 # Load training data
-x_data = idx2numpy.convert_from_file(f"{data_path}/emnist-byclass-train-images-idx3-ubyte")
-y_data = idx2numpy.convert_from_file(f"{data_path}/emnist-byclass-train-labels-idx1-ubyte")
+x_data = idx2numpy.convert_from_file(f"{data_path}/ByClass/emnist-byclass-train-images-idx3-ubyte")
+y_data = idx2numpy.convert_from_file(f"{data_path}/ByClass/emnist-byclass-train-labels-idx1-ubyte")
 
 # Reshape
 x_data = x_data.reshape(x_data.shape[0], x_data.shape[1], x_data.shape[2], 1)
 
 # Configs
 learning_rate = 0.0005
-train_epochs = 18
+train_epochs = 50
 train_workers = 20
 # Validation split value is the amount for validation data and not the train data
 val_split = 0.1
-batch_size = 200
+batch_size = 100
 
 # Validation split and shuffle
 from sklearn.model_selection import train_test_split

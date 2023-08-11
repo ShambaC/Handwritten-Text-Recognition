@@ -70,7 +70,7 @@ model.compile(
 ### Stop earlier if validation loss doesn't improve for 20 epochs.
 earlystopper = tf.keras.callbacks.EarlyStopping(monitor = 'val_loss', patience = 20, verbose = 1)
 
-### Create logs to see graphs in tensorboard. I don't see much use except for making me look cool.
+### Create logs to see graphs in tensorboard.
 tb_callback = tf.keras.callbacks.TensorBoard(f"{model_path}/logs", update_freq = 1)
 
 ### Reduce the learning rate if validation loss doesn't improve for 10 epochs
