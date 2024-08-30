@@ -18,7 +18,7 @@ All the scripts have comments to help people understand what the hell is going o
 Clone the repo and then do the following
 
 ### 📚 Get the EMNIST dataset :
-- Download the dataset from [here](http://www.itl.nist.gov/iaui/vip/cs_links/EMNIST/gzip.zip)
+- Download the dataset from [here](https://biometrics.nist.gov/cs_links/EMNIST/gzip.zip)
 - Extract the `gzip.zip` file.
 - Now from inside the `gzip` folder, extract the following .gz files : 
     - emnist-byclass-train-images-idx3-ubyte.gz
