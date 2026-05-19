@@ -73,10 +73,10 @@ The logs are located at the following folder : `Models/{timestamp}/logs`
 ### ⬇️ Download pre-trained models :
 | Model      |    Type   | Test Loss | Test Accuracy | Download |
 |------------|-----------|-----------|---------------|----------|
-| 1679033527 |     1     |  0.4489   | 0.8467        |[Download](https://pixeldrain.com/u/Ghk2B82r)|
-| 1679036461 |     1     |  0.4381   | 0.8480        |[Download](https://pixeldrain.com/u/wWdCebmU)|
-| 1679220168 |     2     |  0.3837   | 0.8616        |[Download](https://pixeldrain.com/u/TNzBfmSd)|
-| 1679378923 |     3     |  0.3655   | 0.8679        |[Download](https://pixeldrain.com/u/v6wr9ox4)|
+| 1679033527 |     1     |  0.4489   | 0.8467        |[Download](https://pixeldrain.com/u/YoX6aBKh)|
+| 1679036461 |     1     |  0.4381   | 0.8480        |[Download](https://pixeldrain.com/u/xDD8P675)|
+| 1679220168 |     2     |  0.3837   | 0.8616        |[Download](https://pixeldrain.com/u/L3PPhtS7)|
+| 1679378923 |     3     |  0.3655   | 0.8679        |[Download](https://pixeldrain.com/u/fE4sL3ts)|
 
 ### 🏃‍♂️ Run the model :
 - Run the `tkRecogIndv.py` script to check for individual characters only.
